@@ -14,7 +14,7 @@ export function generateReport(diff: DiffResults, options?: ReportOptions) {
     }
 
     if (!lines.length) {
-        return '## No changes to report';
+        return '';
     }
 
     return lines.join('\n');
@@ -36,8 +36,10 @@ function reportChunkGroup(
         return;
     }
 
-    lines.push(`## ${chunkGroupName} (${formatDelta(chunkGroupDiff.delta)} bytes)`);
-    lines.push('');
+    lines.push('<details>');
+    lines.push('<summary>');
+    lines.push(`### ${chunkGroupName} (${formatDelta(chunkGroupDiff.delta)} bytes)`);
+    lines.push('</summary>');
 
     // Header
     lines.push('|| Module | Count | Size |');
@@ -74,7 +76,7 @@ function reportChunkGroup(
         lines.push(`|△|*${count} modules with minor changes*| |${formatDelta(netDelta)}|`);
     }
 
-    lines.push('');
+    lines.push('</details>');
 }
 
 function formatDelta(delta: number) {
