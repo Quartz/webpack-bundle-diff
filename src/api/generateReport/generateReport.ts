@@ -2,7 +2,7 @@ import { DiffResults, ChunkGroupDiff } from '../../types/DiffResults';
 import { ReportOptions, ModuleNameTransform } from '../../types/ReportOptions';
 
 export function generateReport(diff: DiffResults, options?: ReportOptions) {
-    const lines: string[] = [];
+    const lines: string[] = ['Bundle size differences between your PR and [qz.com](https://qz.com):\n'];
     const chunkGroups = (options && options.chunkGroups) || Object.keys(diff);
     const transform = (options && options.moduleNameTransform) || (name => name);
     const threshold = (options && options.threshold) || 100;
@@ -13,7 +13,7 @@ export function generateReport(diff: DiffResults, options?: ReportOptions) {
         }
     }
 
-    if (!lines.length) {
+    if (lines.length === 1) {
         return '';
     }
 
@@ -37,9 +37,8 @@ function reportChunkGroup(
     }
 
     lines.push('<details>');
-    lines.push('<summary>');
-    lines.push(`### ${chunkGroupName} (${formatDelta(chunkGroupDiff.delta)} bytes)`);
-    lines.push('</summary>');
+    lines.push(`<summary><strong>${chunkGroupName} (${formatDelta(chunkGroupDiff.delta)} bytes)</strong></summary>`);
+    lines.push('\n');
 
     // Header
     lines.push('|| Module | Count | Size |');
@@ -75,6 +74,7 @@ function reportChunkGroup(
     if (count) {
         lines.push(`|△|*${count} modules with minor changes*| |${formatDelta(netDelta)}|`);
     }
+    lines.push('');
 
     lines.push('</details>');
 }
