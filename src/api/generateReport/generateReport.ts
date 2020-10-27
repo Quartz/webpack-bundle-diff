@@ -14,7 +14,7 @@ export function generateReport(diff: DiffResults, options?: ReportOptions) {
     }
 
     if (lines.length === 1) {
-        return '';
+        return 'No bundle size changes between your PR and [qz.com](https://qz.com)';
     }
 
     return lines.join('\n');
